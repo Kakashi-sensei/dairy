@@ -1,0 +1,17 @@
+---
+title: "codes"
+author: "Tim"
+date: "2022-12-12"
+output: html_document
+---
+
+```{r}
+#sort the data
+## the current one is from Cybox -- ukb46889_2021May12. the raw one is 725.728 kb
+rawdata <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/ukb46889_2021May12.csv')
+
+
+
+
+
+```
