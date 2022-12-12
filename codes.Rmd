@@ -4,14 +4,56 @@ author: "Tim"
 date: "2022-12-12"
 output: html_document
 ---
-
+```{r}
+#package
+if (!require("dplyr")) install.packages("dplyr")
+library(dplyr)
+```
+# step 1 -- get all wanted variables from different data set
 ```{r}
 #sort the data
-## the current one is from Cybox -- ukb46889_2021May12. the raw one is 725.728 kb
-rawdata <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/ukb46889_2021May12.csv')
-
+### get data1
+rawdata <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/IGF1data.csv')
+data <- rawdata %>%
+  select(ID, APOE4_status, family_history_AD, Sex, Age_Baseline, age1of3groups, SmokingY08, AlcoholY08, BMI_Y08andY12andY14_mean, rsfMRI_Component1, rsfMRI_Component5, rsfMRI_Component7, rsfMRI_Component9, rsfMRI_Component13, rsfMRI_Component14, rsfMRI_Component20)
+#data1 includes fMRI, sex, age, AOPE4, smoking, alcohol, family history, and BMI
+rm(rawdata)
+write.csv(data, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\data1.csv", row.names=FALSE)
 rm(list = ls())
+```
+
+```{r}
+### get data2 -- AOPE4 & Tomm40_650
+rawdata <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/UKB_Jan_27_2020.csv')
+data <- rawdata %>%
+  select(EID, APOE_all, FamilyHistoryAD, Sex, Age, T40_Gcar)
+#data1 includes sex, age, AOPE4, TOMM40, family history
+rm(rawdata)
+write.csv(data, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\data2.csv", row.names=FALSE)
+rm(list = ls())
+```
+
+```{r}
+### get data3 -- cheese intake, Red wine intake, cheese type, milk type
+rawdata <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/UKBiobank_Masterfile.csv')
+
+
+data <- rawdata %>%
+  select(eid, 1408-0.0, 1408-1.0, 1408-2.0, 1418-0.0, 1418-1.0, 1418-2.0)
+#data1 includes sex, age, AOPE4, TOMM40, family history
+rm(rawdata)
+write.csv(data, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\data3.csv", row.names=FALSE)
+rm(list = ls())
+
+# Change colnames of some columns
+colnames(data)[colnames(data) %in% c("1408-0.0", "1408-1.0","1408-2.0")] <- c("CheeseIntake_baseline", "CheeseIntake_1repear", "CheeseIntake_ImagingVisit")
+colnames(data)[colnames(data) %in% c("1418-0.0", "1418-1.0","1418-2.0")] <- c("MilkType_baseline", "MilkType_1repear", "MilkType_ImagingVisit")
+
 
 
 
 ```
+
+
+
+
