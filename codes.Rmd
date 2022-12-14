@@ -8,6 +8,9 @@ output: html_document
 #package
 if (!require("dplyr")) install.packages("dplyr")
 library(dplyr)
+library(knitr)
+knitr::opts_chunk$set(cache = TRUE, warning = FALSE, 
+                      message = FALSE, cache.lazy = FALSE)
 ```
 # step 1 -- get all wanted variables from different data set
 ```{r}
@@ -33,25 +36,69 @@ write.csv(data, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\data2.csv", ro
 rm(list = ls())
 ```
 
+```{unix}
+#get data3
+#cheese and milk data is extracted by Unix because the original data is too large
+## this version of cheese and milk type is from the rawdata
+$ awk -F',' -v OFS=, '{print $1,$50,$51,$52,$53,$54,$55,$56,$57}' ukb42102_2020May26_Genomic_Medical.csv > rawdata.csv
+#rawdata is renamed data3 which includes "CheeseBaselineL"-1408-0.0, "Cheese1repeatL"1408-1.0, "CheeseImagingVisitL"1408-2.0, "MilkTypebaselineL"1418-0.0, "MilkType1repeatL"1418-1.0, "MilkTypeImageVisitL"1418-2.0
+```
+
+
 ```{r}
-### get data3 -- cheese intake, Red wine intake, cheese type, milk type
-rawdata <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/UKBiobank_Masterfile.csv')
-
-
+### get data4 -- cheese intake, Red wine intake, milk type from Brandon's data
+rawdata <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/UKBiobank_Masterfile_rename.csv')
 data <- rawdata %>%
-  select(eid, 1408-0.0, 1408-1.0, 1408-2.0, 1418-0.0, 1418-1.0, 1418-2.0)
-#data1 includes sex, age, AOPE4, TOMM40, family history
+  select(eid, CheeseBaseline, Cheese1repeat, CheeseImagingVisit, MilkTypebaseline, MilkType1repeat, MilkTypeImageVisit)
 rm(rawdata)
-write.csv(data, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\data3.csv", row.names=FALSE)
+write.csv(data, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\data4.csv", row.names=FALSE)
 rm(list = ls())
+# https://biobank.ndph.ox.ac.uk/showcase/field.cgi?id=1408 cheese dictionary
+# cheese intake: "0 : Never 1 : Less than once a week 2 : Once a week 3 : 2-4 times a week 4 : 5-6 times a week 5 : Once or more daily  -1 : Do not know  -3 : Prefer not to answer"
+# milk type: 1 : Full cream 2 : Semi-skimmed 3 : Skimmed 4 : Soya 5 : Other type of milk 6 : Never/rarely have milk -1 : Do not know -3 : Prefer not to answer
+```
 
-# Change colnames of some columns
-colnames(data)[colnames(data) %in% c("1408-0.0", "1408-1.0","1408-2.0")] <- c("CheeseIntake_baseline", "CheeseIntake_1repear", "CheeseIntake_ImagingVisit")
-colnames(data)[colnames(data) %in% c("1418-0.0", "1418-1.0","1418-2.0")] <- c("MilkType_baseline", "MilkType_1repear", "MilkType_ImagingVisit")
+```{unix}
+### get data5 -- get milk intake
+### this raw data is too large, so I have to use unix
+# step 1: get the header line
+$ egrep "eid" ukb42166_2020JUN01.csv > header_ukb42166.csv
+# check wanted vairables to know which columes they are
+$ awk -F',' -v OFS=, '{print $1,$3624,$3625,$3626,$3627,$3628,$3629,$3630,$3631,$3632,$3633,$3754,$3755,$3756,$3757,$3758}' ukb42166_2020JUN01.csv > data5.csv
+# data5 includes 100520-0.0	100520-1.0	100520-2.0	100520-3.0	100520-4.0	100530-0.0	100530-1.0	100530-2.0	100530-3.0	100530-4.0	100920-0.0	100920-1.0	100920-2.0	100920-3.0	100920-4.0, naming MilkIntakeBaseline	MilkIntake1	MilkIntake2	MilkIntake3	MilkIntake4	FMilkIntakeBaseline	FMilkIntake1	FMilkIntake2	FMilkIntake3	FMilkIntake4	MilkTypeBaseline	MilkType1	MilkType2	MilkType3	MilkType4
+```
+#step 2 merge 5 data
+```{r}
+###data1 and data2 have different ID names. THey are changed to eid manually
+#merge five data together
+#merge the least sample, in which only same participants are kept
+dataa <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/data1.csv')
+datab <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/data2.csv')
+datac<-merge(dataa,datab,by="eid")
+rm(dataa)
+rm(datab)
+dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/data3.csv')
+datab<-merge(dataa,datac,by="eid")
+rm(dataa)
+rm(datac)
+dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/data4.csv')
+datac<-merge(dataa,datab,by="eid")
+rm(dataa)
+rm(datab)
+dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/data5.csv')
+datab<-merge(dataa,datac,by="eid")
+rm(dataa)
+rm(datac)
+write.csv(datab, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata.csv", row.names=FALSE)
+rm(list = ls())
+```
 
 
-
-
+```{r}
+#merge five data together
+#merge the most sample, in which all participants are kept
+#!this function is not used because it's meaningless to keep all participants.
+datac<-merge(dataa,datab,by="eid", all.x =TRUE, all.y =TRUE)
 ```
 
 
