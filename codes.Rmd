@@ -99,6 +99,7 @@ dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/data5_redwine.c
 datac<-merge(dataa,datab,by="eid")
 rm(dataa)
 rm(datab)
+colnames(datac)[1]<-"EID"
 write.csv(datac, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata.csv",na='',row.names=FALSE)
 rm(list = ls())
 ```
