@@ -99,10 +99,9 @@ dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/data5_redwine.c
 datac<-merge(dataa,datab,by="eid")
 rm(dataa)
 rm(datab)
-write.csv(datac, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata.csv", row.names=FALSE)
+write.csv(datac, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata.csv",na='',row.names=FALSE)
 rm(list = ls())
 ```
-
 
 ```{r}
 #merge five data together
