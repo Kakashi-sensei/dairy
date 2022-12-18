@@ -29,9 +29,14 @@ rm(list = ls())
 ### get data2 -- AOPE4 & Tomm40_650
 rawdata <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/UKB_Jan_27_2020.csv')
 data <- rawdata %>%
-  select(EID, APOE_all, FamilyHistoryAD, Sex, Age, T40_Gcar)
+  select(EID, APOE_all, T40_Gcar)
 #data1 includes sex, age, AOPE4, TOMM40, family history
 rm(rawdata)
+#set APOE state, syntax is from https://www.statology.org/replace-values-in-data-frame-r/
+data['APOE_all'][data['APOE_all']=='e2/e4'|data['APOE_all']=='e4/e3'|data['APOE_all']=='e4/e4'] <- '1'
+data['APOE_all'][data['APOE_all']=='e2/e3'|data['APOE_all']=='e3/e3'|data['APOE_all']=='e2/e2'] <- '0'
+data['APOE_all'][data['APOE_all']=='NA/NA'] <- 'NA'
+colnames(data)[1]<-"eid"
 write.csv(data, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\data2.csv", row.names=FALSE)
 rm(list = ls())
 ```
