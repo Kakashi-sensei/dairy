@@ -111,6 +111,18 @@ rm(list = ls())
 datac<-merge(dataa,datab,by="eid", all.x =TRUE, all.y =TRUE)
 ```
 
+```{r}
+#add townsend data (189)
+dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_mean.csv')
+datab<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/data6_townsend.csv')
+datac<-merge(dataa,datab,by="eid")
+rm(dataa)
+rm(datab)
+colnames(datac)[1]<-"EID"
+write.csv(datac, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_all.csv",na='',row.names=FALSE)
+rm(list = ls())
+```
+
 
 
 
