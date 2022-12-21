@@ -123,6 +123,19 @@ write.csv(datac, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_all
 rm(list = ls())
 ```
 
+```{r}
+#add IC10
+rawdata <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/IGF1data.csv')
+dataa <- rawdata %>%
+  select(eid, rsfMRI_Component10)
+datab<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_all.csv')
+datac<-merge(dataa,datab,by="eid")
+rm(dataa)
+rm(datab)
+colnames(datac)[1]<-"EID"
+write.csv(datac, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_data.csv",na='',row.names=FALSE)
+rm(list = ls())
+```
 
 
 
