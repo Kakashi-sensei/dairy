@@ -137,5 +137,28 @@ write.csv(datac, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_data.cs
 rm(list = ls())
 ```
 
+```{unix}
+#add cheese24 hour data
+### get data7 -- get cheese 24 data
+### this raw data is too large, so I have to use unix
+# step 1: get the header line
+$ egrep "eid" ukb42166_2020JUN01.csv > header_ukb42166.csv
+# check wanted vairables to know which columes they are (4159-4218)
+$ awk -F',' -v OFS=, '{print $1,$4159,$4160,$4161,$4162,$4163,$4164,$4165,$4166,$4167,$4168,$4169,$4170,$4171,$4172,$4173,$4174,$4175,$4176,$4177,$4178,$4179,$4180,$4181,$4182,$4183,$4184,$4185,$4186,$4187,$4188,$4189,$4190,$4191,$4192,$4193,$4194,$4195,$4196,$4197,$4198,$4199,$4200,$4201,$4202,$4203,$4204,$4205,$4206,$4207,$4208,$4209,$4210,$4211,$4212,$4213,$4214,$4215,$4216,$4217,$4218}' ukb42166_2020JUN01.csv > data7_cheese24_all.csv
+# data7 includes 102800-102910
+```
+
+```{r}
+#merge data7 with others
+dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/dairy_data.csv')
+datab<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/data7_cheese24_all.csv')
+datac<-merge(dataa,datab,by="eid")
+rm(dataa)
+rm(datab)
+colnames(datac)[1]<-"EID"
+write.csv(datac, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_data.csv",na='',row.names=FALSE)
+rm(list = ls())
+```
+
 
 
