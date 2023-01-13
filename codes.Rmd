@@ -388,4 +388,32 @@ rm(list = ls())
 ```
 
 
+```{r}
+#making cheese24 data workable
+dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/dairy_data_cheese24_1.csv')
+dataa$na_count <- apply(is.na(dataa), 1, sum)
+dataa$N_count<-(12-dataa$na_count)
+write.csv(dataa, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_data_cheese24_1a.csv",na='',row.names=FALSE)
+rm(list = ls())
+
+
+dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/dairy_data_cheese24_2.csv')
+dataa$sum<-(dataa$Cheese24_810_2+dataa$Cheese24_820_2+dataa$Cheese24_830_2)
+
+dataa$na_count <- apply(is.na(dataa), 1, sum)
+dataa$N_count<-(12-dataa$na_count)
+write.csv(dataa, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_data_cheese24_2a.csv",na='',row.names=FALSE)
+rm(list = ls())
+dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/dairy_data_cheese24_3.csv')
+dataa$na_count <- apply(is.na(dataa), 1, sum)
+dataa$N_count<-(12-dataa$na_count)
+write.csv(dataa, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_data_cheese24_3a.csv",na='',row.names=FALSE)
+rm(list = ls())
+dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/dairy_data_cheese24_4.csv')
+dataa$na_count <- apply(is.na(dataa), 1, sum)
+dataa$N_count<-(12-dataa$na_count)
+write.csv(dataa, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_data_cheese24_4a.csv",na='',row.names=FALSE)
+rm(list = ls())
+```
+
 
