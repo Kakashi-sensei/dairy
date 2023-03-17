@@ -455,4 +455,15 @@ write.csv(datac, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_wit
 rm(list = ls())
 ```
 
+```{r}
+#add disease
+dataa <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_withCheese.csv')
+datab <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/UKBiobank_disease_Sept2017.csv')
+datac<-merge(dataa,datab,by="EID")
+rm(dataa)
+rm(datab)
+write.csv(datac, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_all_0317.csv",na='',row.names=FALSE)
+rm(list = ls())
+```
+
 
