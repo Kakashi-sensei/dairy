@@ -494,7 +494,33 @@ df$dig <- apply(df[variables], 1, function(row) {
 })
 write.csv(df, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_all_0317_disease.csv",na='',row.names=FALSE)
 rm(list = ls())
+```
 
+```{r}
+df <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_all_0317_disease.csv')
+# count the number of cases valid values (non-NA values) in both variables APOE_all and T40_Gcar
+# Count cases with valid values in both variables
+valid_cases <- sum(!is.na(df$APOE_all) & !is.na(df$T40_Gcar))
+# Display the result
+print(valid_cases)
+```
+```{r}
+#sort data
+df <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_all_0317_d_final.csv')
+
+# Count occurrences of each value in 'dig' variable, including invalid values
+value_counts <- table(addNA(df$dig))
+
+# Display the result
+print(value_counts)
+
+#           F     G     I     M  <NA> 
+# 12025    90   479    55    12     0 
+
+# Exclude cases with 'dig' values "F", "G", "I", and "M"
+filtered_df <- df[!df$dig %in% c("F", "G", "I", "M"), ]
+write.csv(filtered_df, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_final0317.csv",na='',row.names=FALSE)
+rm(list = ls())
 ```
 
 
