@@ -466,4 +466,35 @@ write.csv(datac, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_all
 rm(list = ls())
 ```
 
+```{r}
+#check the disease
+# central nervous system diseases (G00-G99), cerebrovascular diseases (I60-I69), or mental and behavioral disorders (F00-F99)
+
+df <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_all_0317.csv')
+
+
+variables <- c("X41202.0.0", "X41202.0.1", "X41202.0.2", "X41202.0.3", "X41202.0.4", "X41202.0.5", "X41202.0.6", "X41202.0.7", "X41202.0.8")
+df[variables] <- lapply(df[variables], as.character)
+
+# Function to check if a value starts with any of the given prefixes
+starts_with_any <- function(value, prefixes) {
+  any(sapply(prefixes, function(prefix) startsWith(value, prefix)))
+}
+
+# Create 'dig' variable
+df$dig <- apply(df[variables], 1, function(row) {
+  has_G <- any(sapply(row, function(value) starts_with_any(value, c("G"))))
+  has_F <- any(sapply(row, function(value) starts_with_any(value, c("F"))))
+  has_I6 <- any(sapply(row, function(value) starts_with_any(value, c("I6"))))
+  
+  ifelse(has_G && has_F || has_G && has_I6 || has_F && has_I6, "M",
+         ifelse(has_G, "G",
+                ifelse(has_F, "F",
+                       ifelse(has_I6, "I", NA))))
+})
+write.csv(df, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_all_0317_disease.csv",na='',row.names=FALSE)
+rm(list = ls())
+
+```
+
 
