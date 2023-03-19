@@ -524,3 +524,69 @@ rm(list = ls())
 ```
 
 
+
+```{r}
+# in this part, the diet consumption is considered as the total captures.
+if (!require("dplyr")) install.packages("dplyr")
+library(dplyr)
+df <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_final0317.csv')
+# add all cheese 24 hour variable together
+df <- df %>%
+  mutate(
+    Cheese24sum = if_else(
+      rowSums(is.na(select(., Cheese24sumBaseline, Cheese24sum1, Cheese24sum2, Cheese24sum3, Cheese24sum4))) == 5,
+      NA_real_,
+      coalesce(Cheese24sumBaseline, 0) +
+        coalesce(Cheese24sum1, 0) +
+        coalesce(Cheese24sum2, 0) +
+        coalesce(Cheese24sum3, 0) +
+        coalesce(Cheese24sum4, 0)
+    )
+  )
+# add all milk intake variable together
+df <- df %>%
+  mutate(
+    Milksum = if_else(
+      rowSums(is.na(select(., MilkIntakeBaseline, MilkIntake1, MilkIntake2, MilkIntake3, MilkIntake4))) == 5,
+      NA_real_,
+      coalesce(MilkIntakeBaseline, 0) +
+        coalesce(MilkIntake1, 0) +
+        coalesce(MilkIntake2, 0) +
+        coalesce(MilkIntake3, 0) +
+        coalesce(MilkIntake4, 0)
+    )
+  )
+# add all Fmilk intake variables together
+df <- df %>%
+  mutate(
+    FMilksum = if_else(
+      rowSums(is.na(select(., FMilkIntakeBaseline, FMilkIntake1, FMilkIntake2, FMilkIntake3, FMilkIntake4))) == 5,
+      NA_real_,
+      coalesce(FMilkIntakeBaseline, 0) +
+        coalesce(FMilkIntake1, 0) +
+        coalesce(FMilkIntake2, 0) +
+        coalesce(FMilkIntake3, 0) +
+        coalesce(FMilkIntake4, 0)
+    )
+  )
+
+# add all red wine 24 hours together
+df <- df %>%
+  mutate(
+    Redwine24sum = if_else(
+      rowSums(is.na(select(., RedwineBase24, Redwine24_1, Redwine24_2, Redwine24_3, Redwine24_4))) == 5,
+      NA_real_,
+      coalesce(RedwineBase24, 0) +
+        coalesce(Redwine24_1, 0) +
+        coalesce(Redwine24_2, 0) +
+        coalesce(Redwine24_3, 0) +
+        coalesce(Redwine24_4, 0)
+    )
+  )
+#in this version, the diet total consumption (red wine, cheese, milk, fmilk) variable is added
+write.csv(df, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_final0319.csv",na='',row.names=FALSE)
+rm(list = ls())
+
+```
+
+
