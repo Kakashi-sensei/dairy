@@ -635,5 +635,11 @@ rm(list = ls())
 
 
 ```
+```{r}
+#check cases numbers for valid values for both family history, APOE4, and TOMM40
+df <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_final0320.csv')
+valid_cases <- complete.cases(df$family_history_AD, df$T40_Gcar, df$APOE_all)
+num_valid_cases <- sum(valid_cases)
 
+```
 
