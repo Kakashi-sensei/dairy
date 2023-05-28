@@ -632,14 +632,21 @@ df <- df %>%
 # the 0320 version includes mean values
 write.csv(df, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_final0320.csv",na='',row.names=FALSE)
 rm(list = ls())
-
-
 ```
+
 ```{r}
 #check cases numbers for valid values for both family history, APOE4, and TOMM40
 df <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_final0320.csv')
 valid_cases <- complete.cases(df$family_history_AD, df$T40_Gcar, df$APOE_all)
 num_valid_cases <- sum(valid_cases)
+rm(list = ls())
+```
 
+```{r}
+#check cases numbers for valid values for all fixed predictors or explanatory variables
+df <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_final0320.csv')
+df1 <- df[complete.cases(df$family_history_AD, df$T40_Gcar, df$APOE_all, df$Sex, df$Age_Baseline, df$Townsend, df$SmokingY08, df$AlcoholY08, df$BMI_Y08andY12andY14_mean), ]
+write.csv(df1, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_0527_valid.csv",na='',row.names=FALSE)
+rm(list = ls())
 ```
 
