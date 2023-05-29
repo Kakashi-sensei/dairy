@@ -650,3 +650,26 @@ write.csv(df1, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_0527_
 rm(list = ls())
 ```
 
+```{r}
+#select red wine data
+df <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_0527_valid.csv')
+df1 <- df[complete.cases(df$family_history_AD, df$T40_Gcar, df$APOE_all, df$Sex, df$Age_Baseline, df$Townsend, df$SmokingY08, df$AlcoholY08, df$BMI_Y08andY12andY14_mean, df$Redwine24mean), ]
+write.csv(df1, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_redwine.csv",na='',row.names=FALSE)
+rm(list = ls())
+```
+
+```{r}
+#select milk data
+df <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_0527_valid.csv')
+df1 <- df[complete.cases(df$family_history_AD, df$T40_Gcar, df$APOE_all, df$Sex, df$Age_Baseline, df$Townsend, df$SmokingY08, df$AlcoholY08, df$BMI_Y08andY12andY14_mean, df$milkmean), ]
+write.csv(df1, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_milk.csv",na='',row.names=FALSE)
+rm(list = ls())
+```
+
+```{r}
+#select cheese data
+df <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_0527_valid.csv')
+df1 <- df[complete.cases(df$family_history_AD, df$T40_Gcar, df$APOE_all, df$Sex, df$Age_Baseline, df$Townsend, df$SmokingY08, df$AlcoholY08, df$BMI_Y08andY12andY14_mean, df$Cheese24mean), ]
+write.csv(df1, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_cheese.csv",na='',row.names=FALSE)
+rm(list = ls())
+```
