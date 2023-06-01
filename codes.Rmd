@@ -673,3 +673,15 @@ df1 <- df[complete.cases(df$family_history_AD, df$T40_Gcar, df$APOE_all, df$Sex,
 write.csv(df1, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_cheese.csv",na='',row.names=FALSE)
 rm(list = ls())
 ```
+
+```{r}
+#get random effects data-- 54: initial assessment visit location (https://biobank.ndph.ox.ac.uk/ukb/field.cgi?id=54);52: month of birth (https://biobank.ndph.ox.ac.uk/ukb/field.cgi?id=52)
+dfa <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_0527_valid.csv')
+dfb <-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/random_effects.csv')
+dfc<-merge(dfa,dfb,by="EID")
+rm(dfa)
+rm(dfb)
+#dairy_data_0531.csv has two types of random effects data
+write.csv(dfc, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_data_0531.csv",na='',row.names=FALSE)
+rm(list = ls())
+```
