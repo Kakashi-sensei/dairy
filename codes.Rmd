@@ -685,3 +685,52 @@ rm(dfb)
 write.csv(dfc, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_data_0531.csv",na='',row.names=FALSE)
 rm(list = ls())
 ```
+
+```{r}
+# merge random effects into milk, cheese, and redwine data
+dfa <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_cheese.csv')
+dfb <-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/random_effects.csv')
+dfc<-merge(dfa,dfb,by="EID")
+rm(dfa)
+write.csv(dfc, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_cheese_withRE.csv",na='',row.names=FALSE)
+dfa <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_milk.csv')
+dfc<-merge(dfa,dfb,by="EID")
+rm(dfa)
+write.csv(dfc, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_milk_withRE.csv",na='',row.names=FALSE)
+dfa <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_redwine.csv')
+dfc<-merge(dfa,dfb,by="EID")
+rm(dfa)
+write.csv(dfc, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairydata_redwine_withRE.csv",na='',row.names=FALSE)
+rm(list=ls())
+```
+
+```{r}
+#main effects test in R
+install.packages("lme4")
+library(lme4)
+df <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_milk_withRE.csv')
+df$APOE_all <- as.factor(df$APOE_all)
+df$T40_Gcar <- as.factor(df$T40_Gcar)
+df$family_history_AD <- as.factor(df$family_history_AD)
+df$Sex <- as.factor(df$Sex)
+df$AlcoholY08 <- as.factor(df$AlcoholY08)
+df$SmokingY08 <- as.factor(df$SmokingY08)
+df$Assessment_0 <- as.factor(df$Assessment_0)
+model <- lmer(rsfMRI_Component1 ~ APOE_all + T40_Gcar + family_history_AD + Age_Baseline + Sex + 
+              BMI_Y08andY12andY14_mean + AlcoholY08 + SmokingY08 + Townsend + milkmean + 
+              (1 | Assessment_0), 
+              data = df)
+summary(model)
+install.packages("lmerTest")
+library(lmerTest)
+
+# Fit the model
+model <- lmer(rsfMRI_Component1 ~ APOE_all + T40_Gcar + family_history_AD + Age_Baseline + Sex + 
+              BMI_Y08andY12andY14_mean + AlcoholY08 + SmokingY08 + Townsend + milkmean + 
+              (1 | Assessment_0), 
+              data = df)
+
+# Get the summary
+summary(model)
+
+```
