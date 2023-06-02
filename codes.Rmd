@@ -719,19 +719,20 @@ install.packages("lmerTest")
 library(lmerTest)
 
 # Fit the model
-model <- lmer(rsfMRI_Component1 ~ APOE_all + T40_Gcar + family_history_AD + Age_Baseline + Sex + 
+df$APOE_all <- as.factor(df$APOE_all)
+df$T40_Gcar <- as.factor(df$T40_Gcar)
+df$family_history_AD <- as.factor(df$family_history_AD)
+df$Sex <- as.factor(df$Sex)
+df$AlcoholY08 <- as.factor(df$AlcoholY08)
+df$SmokingY08 <- as.factor(df$SmokingY08)
+df$Assessment_0 <- as.factor(df$Assessment_0)
+df$EID <- as.factor(df$EID)
+model <- lmer(rsfMRI_Component13 ~ APOE_all + T40_Gcar + family_history_AD + Age_Baseline + Sex + 
               BMI_Y08andY12andY14_mean + AlcoholY08 + SmokingY08 + Townsend + milkmean + 
               (1 | Assessment_0), 
-              data = df)
+              data = df, REML=FALSE)
 
 # Get the summary
 summary(model)
 
-model <- lmer(rsfMRI_Component1 ~ APOE_all + T40_Gcar + family_history_AD + Age_Baseline + Sex + 
-              BMI_Y08andY12andY14_mean + AlcoholY08 + SmokingY08 + Townsend + milkmean + 
-              (1 | Month_birth), 
-              data = df)
-
-# Get the summary
-summary(model)
 ```
