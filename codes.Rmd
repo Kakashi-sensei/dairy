@@ -736,3 +736,11 @@ model <- lmer(rsfMRI_Component13 ~ APOE_all + T40_Gcar + family_history_AD + Age
 summary(model)
 
 ```
+
+```{Unix}
+### get data8 -- get white wine and beer data
+### this raw data is too large, so I have to use unix
+# check wanted variables to know which columes they are (3664-3673)
+$ awk -F',' -v OFS=, '{print $1,$3664,$3665,$3666,$3667,$3668,$3669,$3670,$3671,$3672,$3673}' ukb42166_2020JUN01.csv > data8_whitewine_beer.csv
+# data8 includes 3664-3673
+```
