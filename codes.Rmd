@@ -744,3 +744,56 @@ summary(model)
 $ awk -F',' -v OFS=, '{print $1,$3664,$3665,$3666,$3667,$3668,$3669,$3670,$3671,$3672,$3673}' ukb42166_2020JUN01.csv > data8_whitewine_beer.csv
 # data8 includes 3664-3673
 ```
+
+```{r}
+#merge white wine and beer with all others
+dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/data8_whitewine_beer.csv')
+dataa$White_wine_0[dataa$White_wine_0 == '555'] <- '0.5'
+dataa$White_wine_0[dataa$White_wine_0 == '600'] <- '6'
+dataa$White_wine_0[dataa$White_wine_0 == '111'] <- ''
+dataa$White_wine_1[dataa$White_wine_1 == '555'] <- '0.5'
+dataa$White_wine_1[dataa$White_wine_1 == '600'] <- '6'
+dataa$White_wine_1[dataa$White_wine_1 == '111'] <- ''
+dataa$White_wine_2[dataa$White_wine_2 == '555'] <- '0.5'
+dataa$White_wine_2[dataa$White_wine_2 == '600'] <- '6'
+dataa$White_wine_2[dataa$White_wine_2 == '111'] <- ''
+dataa$White_wine_3[dataa$White_wine_3 == '555'] <- '0.5'
+dataa$White_wine_3[dataa$White_wine_3 == '600'] <- '6'
+dataa$White_wine_3[dataa$White_wine_3 == '111'] <- ''
+dataa$White_wine_4[dataa$White_wine_4 == '555'] <- '0.5'
+dataa$White_wine_4[dataa$White_wine_4 == '600'] <- '6'
+dataa$White_wine_4[dataa$White_wine_4 == '111'] <- ''
+dataa$Beer_0[dataa$Beer_0 == '555'] <- '0.5'
+dataa$Beer_0[dataa$Beer_0 == '600'] <- '6'
+dataa$Beer_0[dataa$Beer_0 == '111'] <- ''
+dataa$Beer_1[dataa$Beer_1 == '555'] <- '0.5'
+dataa$Beer_1[dataa$Beer_1 == '600'] <- '6'
+dataa$Beer_1[dataa$Beer_1 == '111'] <- ''
+dataa$Beer_2[dataa$Beer_2 == '555'] <- '0.5'
+dataa$Beer_2[dataa$Beer_2 == '600'] <- '6'
+dataa$Beer_2[dataa$Beer_2 == '111'] <- ''
+dataa$Beer_3[dataa$Beer_3 == '555'] <- '0.5'
+dataa$Beer_3[dataa$Beer_3 == '600'] <- '6'
+dataa$Beer_3[dataa$Beer_3 == '111'] <- ''
+dataa$Beer_4[dataa$Beer_4 == '555'] <- '0.5'
+dataa$Beer_4[dataa$Beer_4 == '600'] <- '6'
+dataa$Beer_4[dataa$Beer_4 == '111'] <- ''
+datab <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairy_data_0531.csv')
+datac<-merge(dataa,datab,by="EID")
+write.csv(datac, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_alcohol_0604.csv",na='',row.names=FALSE)
+
+```
+
+```{r}
+# To adjust p-values for multiple comparisons using the False Discovery Rate (FDR) in R, you can use the p.adjust function with the method set to "fdr".
+# Assuming you have a vector of p-values
+p_values <- c(0.272967, 0.086225, 0.004644, 0.131446, 0.105765, 0.936554, 0.000996, 0.122809, 0.155221, 0.208878, 0.242088, 0.028687, 0.087636, 0.630368, 0.320744, 0.830014, 0.232144, 0.402830, 0.563674, 0.230983, 0.010926)
+
+p_values <- c(0.122809, 0.155221, 0.208878, 0.242088, 0.028687, 0.087636, 0.630368, 0.320744, 0.830014, 0.232144, 0.402830, 0.563674, 0.230983, 0.010926)
+
+# Adjust the p-values
+adjusted_p_values <- p.adjust(p_values, method = "fdr")
+
+# Print the adjusted p-values
+print(adjusted_p_values)
+```
