@@ -796,8 +796,27 @@ adjusted_p_values <- p.adjust(p_values, method = "fdr")
 print(adjusted_p_values)
 ```
 
-```{r}
+```{Unix}
 ### get data9 -- get all alcohol data
 $ awk -F’,’ -v OFS=, '{print $1,$2339,$2340,$2341,$2342,$2343,$2344,$2345,$2346,$2347,$2348,$2349,$2350,$2351,$2352,$2353,$2354,$2355,$2356,$2357,$2358,$2359,$2360,$2361,$2362,$2363,$2364,$2365,$2366,$2367,$2368,$2369,$2370,$2371,$2372,$2373,$2659,$2660,$2661,$2662,$2663,$2664,$2665,$2666,$2667,$2668,$2669,$2670,$2671,$2672,$2673,$3679,$3680,$3681,$3682,$3683}' ukb42166_2020JUN01.csv > data9_alcohol.csv
+# it doesn't work because "awk" would make a too large data
+# I used the following code
+$ cols="1,"$(seq -s, 2339 2373)","$(seq -s, 2659 2673)","$(seq -s, 3679 3683)
+cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data9_alcohol.csv
 ```
 
+```{r}
+#merge all alcohol data with the others
+dataa <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/data9_alcohol.csv')
+datab <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_final0320.csv')
+datac<-merge(dataa,datab,by="EID")
+rm(dataa)
+rm(datab)
+dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/random_effects.csv')
+datab<-merge(dataa,datac,by="EID")
+rm(dataa)
+rm(datac)
+write.csv(datab, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_alcohol_0609.csv",na='',row.names=FALSE)
+rm(list=ls())
+# 0609 has all alcohol data and dairy data
+```
