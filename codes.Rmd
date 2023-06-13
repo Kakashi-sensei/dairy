@@ -823,11 +823,6 @@ rm(list=ls())
 
 ```{r}
 #sort alcohol data
-if (!require("dplyr")) install.packages("dplyr")
-library(dplyr)
-if (!require("tidyverse")) install.packages("tidyverse")
-library(tidyverse)
-
 data <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairy_alcohol_0609.csv')
 ## make size values meaningful: 1=1(125ml); 2=1.4(170ml); 3=2(250ml)
 # Specify the variables and their respective replacements
@@ -879,27 +874,37 @@ for (var in variables) {
     }
   }
 }
-# In this code, ls() lists all objects in the environment, setdiff() finds the set difference between this list and the character string "data", effectively creating a list of all objects in the environment that aren't named "data". Then rm() removes all objects in this list from the environment.
-rm(list=setdiff(ls(), "data"))
 
-##Calculate the actrual white wine intake (white_mean):
+# Calculate Beer mean
+data$Beer_mean <- rowMeans(data[ , grep("Beer", names(data))], na.rm = TRUE)
 
-# Create columns for White_i
-for(i in 0:4) {
-  data <- data %>%
-    mutate(!!paste0("White_", i) := case_when(
-      !is.na(!!sym(paste0("Size_White_", i))) & !is.na(!!sym(paste0("White_wine.", i, ".0"))) ~ !!sym(paste0("Size_White_", i)) * !!sym(paste0("White_wine.", i, ".0")),
-      is.na(!!sym(paste0("Size_White_", i))) & !is.na(!!sym(paste0("White_wine.", i, ".0"))) ~ 1.4 * !!sym(paste0("White_wine.", i, ".0")),
-      TRUE ~ as.numeric(NA)
-    ))
+# Calculate Spirits mean
+data$Spirits_mean <- rowMeans(data[ , grep("Spirits", names(data))], na.rm = TRUE)
+
+write.csv(data, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_alcohol_0612.csv",na='',row.names=FALSE)
+```
+
+```{r}
+# create new White_i columns
+for (i in 0:4) {
+  data <- transform(data, 
+                    White_i = ifelse(!is.na(Size_White_i) & !is.na(White_wine.i.0), Size_White_i * White_wine.i.0, 
+                                    ifelse(is.na(Size_White_i) & !is.na(White_wine.i.0), 1.4 * White_wine.i.0, 
+                                           NA)))
+  names(data)[names(data) == "White_i"] <- paste("White_", i, sep="")
 }
 
-# Create White_mean column as row mean of White_i
-data <- data %>%
-  rowwise() %>%
-  mutate(White_mean = mean(c_across(starts_with("White_")), na.rm = TRUE)) %>%
-  ungroup()
-rm(list=setdiff(ls(), "data"))
+# create new White_mean column
+data$White_mean <- rowMeans(data[ , grep("White_", names(data))], na.rm = TRUE)
+
+
+# Base case for Red (i=0)
+data <- transform(data,
+                  Red_0 = ifelse(!is.na(Size_Red_0) & !is.na(RedwineBase24),
+                                 Size_Red_0 * RedwineBase24,
+                                 ifelse(is.na(Size_Red_0) & !is.na(RedwineBase24),
+                                        1.4 * RedwineBase24,
+                                        NA)))
 
 # create new Rose_i columns
 for (i in 0:4) {
@@ -912,7 +917,6 @@ for (i in 0:4) {
 
 # create new Rose_mean column
 data$Rose_mean <- rowMeans(data[ , grep("Rose_", names(data))], na.rm = TRUE)
-rm(list=setdiff(ls(), "data"))
 
 # Base case for Red (i=0)
 data <- transform(data,
