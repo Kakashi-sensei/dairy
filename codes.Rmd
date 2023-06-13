@@ -820,3 +820,133 @@ write.csv(datab, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_alcohol
 rm(list=ls())
 # 0609 has all alcohol data and dairy data
 ```
+
+```{r}
+#sort alcohol data
+if (!require("dplyr")) install.packages("dplyr")
+library(dplyr)
+if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+
+data <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairy_alcohol_0609.csv')
+## make size values meaningful: 1=1(125ml); 2=1.4(170ml); 3=2(250ml)
+# Specify the variables and their respective replacements
+variables <- c('Size_White', 'Size_Red', 'Size_Rose', 'Beer', 'Rose_wine', 'White_wine')
+replacements <- list('2'='1.7', '3'='2', '4'='', '5'='')
+
+# Loop over each variable
+for (var in variables) {
+  # Loop over each column index
+  for (idx in 0:4) {
+    # Construct the column name
+    column_name <- paste(var, idx, sep="_")
+    if(column_name %in% colnames(data)){
+      # Loop over each replacement
+      for (old in names(replacements)) {
+        # Replace the values in the column
+        data[[column_name]][data[[column_name]] == old] <- replacements[[old]]
+      }
+    }
+  }
+}
+
+# Again specify variables for another set of replacements
+variables <- c('Beer', 'Rose_wine', 'White_wine', 'Spirits')
+replacements <- list('555'='0.5', '600'='6', '111'='')
+
+# Repeat the above loop process for these variables and replacements
+for (var in variables) {
+  for (idx in 0:4) {
+    column_name <- paste(var, idx, sep="_")
+    if(column_name %in% colnames(data)){
+      for (old in names(replacements)) {
+        data[[column_name]][data[[column_name]] == old] <- replacements[[old]]
+      }
+    }
+  }
+}
+
+# Now for rowMeans computation
+variables <- c('Size_White_wine', 'Size_Red_wine', 'Size_Rose_wine')
+suffixes <- list('0.0', '0.1', '0.2', '1.0', '1.1', '1.2', '2.0', '2.1', '2.2', '3.0', '3.1', '3.2', '4.0', '4.1', '4.2')
+
+for (var in variables) {
+  for (idx in 0:4) {
+    column_name <- paste('Size', strsplit(var, "_")[[1]][2], idx, sep="_")
+    column_names <- paste(var, idx, suffixes, sep=".")
+    if(all(column_names %in% colnames(data))){
+      data[[column_name]] <- rowMeans(data[, column_names], na.rm = TRUE)
+    }
+  }
+}
+# In this code, ls() lists all objects in the environment, setdiff() finds the set difference between this list and the character string "data", effectively creating a list of all objects in the environment that aren't named "data". Then rm() removes all objects in this list from the environment.
+rm(list=setdiff(ls(), "data"))
+
+##Calculate the actrual white wine intake (white_mean):
+
+# Create columns for White_i
+for(i in 0:4) {
+  data <- data %>%
+    mutate(!!paste0("White_", i) := case_when(
+      !is.na(!!sym(paste0("Size_White_", i))) & !is.na(!!sym(paste0("White_wine.", i, ".0"))) ~ !!sym(paste0("Size_White_", i)) * !!sym(paste0("White_wine.", i, ".0")),
+      is.na(!!sym(paste0("Size_White_", i))) & !is.na(!!sym(paste0("White_wine.", i, ".0"))) ~ 1.4 * !!sym(paste0("White_wine.", i, ".0")),
+      TRUE ~ as.numeric(NA)
+    ))
+}
+
+# Create White_mean column as row mean of White_i
+data <- data %>%
+  rowwise() %>%
+  mutate(White_mean = mean(c_across(starts_with("White_")), na.rm = TRUE)) %>%
+  ungroup()
+rm(list=setdiff(ls(), "data"))
+
+# create new Rose_i columns
+for (i in 0:4) {
+  data <- transform(data, 
+                    Rose_i = ifelse(!is.na(Size_Rose_i) & !is.na(Rose_wine.i.0), Size_Rose_i * Rose_wine.i.0, 
+                                    ifelse(is.na(Size_Rose_i) & !is.na(Rose_wine.i.0), 1.4 * Rose_wine.i.0, 
+                                           NA)))
+  names(data)[names(data) == "Rose_i"] <- paste("Rose_", i, sep="")
+}
+
+# create new Rose_mean column
+data$Rose_mean <- rowMeans(data[ , grep("Rose_", names(data))], na.rm = TRUE)
+rm(list=setdiff(ls(), "data"))
+
+# Base case for Red (i=0)
+data <- transform(data,
+                  Red_0 = ifelse(!is.na(Size_Red_0) & !is.na(RedwineBase24),
+                                 Size_Red_0 * RedwineBase24,
+                                 ifelse(is.na(Size_Red_0) & !is.na(RedwineBase24),
+                                        1.4 * RedwineBase24,
+                                        NA)))
+
+# Subsequent iterations for Red (i=1~4)
+for (i in 1:4) {
+  redwine_column = paste("Redwine24_", i, sep="")
+  size_red_column = paste("Size_Red_", i, sep="")
+  
+  data <- transform(data, 
+                    Red_i = ifelse(!is.na(data[[size_red_column]]) & !is.na(data[[redwine_column]]), 
+                                   data[[size_red_column]] * data[[redwine_column]], 
+                                   ifelse(is.na(data[[size_red_column]]) & !is.na(data[[redwine_column]]), 
+                                          1.4 * data[[redwine_column]], 
+                                          NA)))
+  names(data)[names(data) == "Red_i"] <- paste("Red_", i, sep="")
+}
+
+# Calculate Red mean
+data$Red_mean <- rowMeans(data[ , grep("Red_", names(data))], na.rm = TRUE)
+
+
+# Calculate Beer mean
+data$Beer_mean <- rowMeans(data[ , grep("Beer", names(data))], na.rm = TRUE)
+
+# Calculate Spirits mean
+data$Spirits_mean <- rowMeans(data[ , grep("Spirits", names(data))], na.rm = TRUE)
+
+write.csv(data, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_alcohol_0612.csv",na='',row.names=FALSE)
+
+rm(list=ls())
+```
