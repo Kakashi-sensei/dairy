@@ -946,6 +946,41 @@ data$Spirits_mean <- rowMeans(data[,c('Spirits.0.0', 'Spirits.1.0', 'Spirits.2.0
 
 
 write.csv(data, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_alcohol_0612.csv",na='',row.names=FALSE)
+# Only get alcohol data
+# Define the column names to remove
+cols_to_remove <- c('Month_birth', 'Assessment_1', 'Assessment_image', 'Cheese24sumBaseline', 
+                    'Cheese24sum4', 'Cheese24sum3', 'Cheese24sum2', 'MilkIntakeBaseline', 
+                    'MilkIntake1', 'MilkIntake2', 'MilkIntake3', 'MilkIntake4', 
+                    'MilkIntake_mean', 'FMilkIntakeBaseline', 'FMilkIntake1', 'FMilkIntake2', 
+                    'FMilkIntake3', 'FMilkIntake4', 'FMilkIntake_mean', 'MilkTypeBaseline', 
+                    'MilkType1', 'MilkType2', 'MilkType3', 'MilkType4', 'RedWine_Baselineb', 
+                    'RedWine_1repeatb', 'Redwine_imageb', 'CheeseBaselineL', 'Cheese1repeatL', 
+                    'CheeseImagingVisit', 'CheeseImagingVisitRepeatL', 'MilkTypebaselineL', 
+                    'MilkType1repeatL', 'MilkTypeImageVisitL', 'MilkTypeImagingVisitRepeatL',
+                    'age1of3groups', 'AlcoholY08', 'Cheese24Baseline', 'Cheese24_1', 
+                    'Cheese24_2', 'Cheese24_3', 'Cheese24_4', 'Cheese24_810Baseline', 
+                    'Cheese24_810_1', 'Cheese24_810_2', 'Cheese24_810_3', 'Cheese24_810_4', 
+                    'Cheese24_810_mean', 'Cheese24_820Baseline', 'Cheese24_820_1', 
+                    'Cheese24_820_2', 'Cheese24_820_3', 'Cheese24_820_4', 'Cheese24_830Baseline',
+                    'Cheese24_830_1', 'Cheese24_830_2', 'Cheese24_830_3', 'Cheese24_830_4',
+                    'Cheese24_840Baseline', 'Cheese24_840_1', 'Cheese24_840_2', 'Cheese24_840_3', 
+                    'Cheese24_840_4', 'Cheese24_850Baseline', 'Cheese24_850_1', 'Cheese24_850_2', 
+                    'Cheese24_850_3', 'Cheese24_850_4', 'Cheese24_860Baseline', 'Cheese24_860_1',
+                    'Cheese24_860_2', 'Cheese24_860_3', 'Cheese24_860_4', 'Cheese24_870Baseline', 
+                    'Cheese24_870_1', 'Cheese24_870_2', 'Cheese24_870_3', 'Cheese24_870_4', 
+                    'Cheese24_880Baseline', 'Cheese24_880_1', 'Cheese24_880_2', 'Cheese24_880_3', 
+                    'Cheese24_880_4', 'Cheese24_890Baseline', 'Cheese24_890_1', 'Cheese24_890_2', 
+                    'Cheese24_890_3', 'Cheese24_890_4', 'Cheese24_900Baseline', 'Cheese24_900_1', 
+                    'Cheese24_900_2', 'Cheese24_900_3', 'Cheese24_900_4', 'Cheese24_910Baseline', 
+                    'Cheese24_910_1', 'Cheese24_910_2', 'Cheese24_910_3', 'Cheese24_910_4', 
+                    'Cheese24sum1', 'Cheese24sum', 'Milksum', 'FMilksum', 'Redwine24sum', 
+                    'Cheese24mean', 'milkmean', 'Fmilkmean', 'Redwine24mean')
+
+# Remove the columns from the dataframe
+data[cols_to_remove] <- list(NULL)
+
+write.csv(data, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\alcohol_0614.csv",na='',row.names=FALSE)
+
 rm(list=ls())
 ```
 
