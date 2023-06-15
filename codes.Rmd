@@ -844,17 +844,13 @@ columns <- c('Size_White_wine.0.0', 'Size_White_wine.0.1', 'Size_White_wine.0.2'
              'Size_Rose_wine.4.0', 'Size_Rose_wine.4.1')
 
 # Replace values for each specified column
-for (col in columns) {
-  data <- data %>% 
-    mutate(!!col := case_when(
-      .data[[col]] == "2" ~ 1.7,
-      .data[[col]] == "3" ~ 2,
-      .data[[col]] == "4" ~ NA,
-      .data[[col]] == "5" ~ NA
-      ))
-}
-
-rm(col)
+data <- data %>%
+  mutate_at(vars(columns), function(x) case_when(
+    x == 2 ~ 1.7,
+    x == 3 ~ 2,
+    x %in% c(4, 5) ~ NA_real_,
+    TRUE ~ x
+  ))
 rm(columns)
 
 # Calculate row means for alcohol size
@@ -885,20 +881,22 @@ for (wine_type in wine_types) {
     }
   }
 }
+rm(list = setdiff(ls(), "data"))
+
 
 # calculate white, rose, and red wine mean value (weighted with size)
-
 # firstly, specify variables all alcohol variables for another set of replacements
 
-cols_to_mutate <- c("White_wine.0.0", "White_wine.1.0", "White_wine.2.0", "White_wine.3.0", 
-                    "White_wine.4.0", "Beer.0.0", "Beer.1.0", "Beer.2.0", "Beer.3.0", 
-                    "Beer.4.0", "Spirits.0.0", "Spirits.1.0", "Spirits.2.0", "Spirits.3.0", 
-                    "Spirits.4.0")
+columns <- c("White_wine.0.0", "White_wine.1.0", "White_wine.2.0", "White_wine.3.0", "White_wine.4.0", "Beer.0.0", "Beer.1.0", "Beer.2.0", "Beer.3.0", "Beer.4.0", "Spirits.0.0", "Spirits.1.0", "Spirits.2.0", "Spirits.3.0", "Spirits.4.0", "Rose_wine.0.0", "Rose_wine.1.0", "Rose_wine.2.0",	"Rose_wine.3.0", "Rose_wine.4.0")
 
 data <- data %>% 
-  mutate_at(vars(cols_to_mutate), 
-            list(~ recode(., `555` = 0.5, `600` = 6, `111` = NA_real_)))
-
+  mutate_at(vars(columns), function(x) case_when(
+    x == 555 ~ 0.5,
+    x == 600 ~ 6,
+    x == 111 ~ NA_real_,
+    TRUE ~ x
+  ))
+rm(columns)
 
 # Create the White_ variables
 for (i in 0:4) {
@@ -930,21 +928,22 @@ for (i in 0:4) {
                                           if_else(!is.na(get(red_cols[i + 1])),
                                                    get(red_cols[i + 1])*1.4, NA_real_)))
 }
+rm(list = setdiff(ls(), "data"))
 
 # Create White_mean, Rose_mean, Red_mean
-data <- data %>%
-  rowwise() %>%
-  mutate(White_mean = mean(c_across(starts_with("White_")), na.rm = TRUE),
-         Rose_mean = mean(c_across(starts_with("Rose_")), na.rm = TRUE),
-         Red_mean = mean(c_across(starts_with("Red_")), na.rm = TRUE)) %>%
-  ungroup()
 
 # Create Beer_mean, Spirits_mean
-data <- data %>%
-  rowwise() %>%
-  mutate(Beer_mean = mean(c(Beer.0.0, Beer.1.0, Beer.2.0, Beer.3.0, Beer.4.0), na.rm = TRUE),
-         Spirits_mean = mean(c(Spirits.0.0, Spirits.1.0, Spirits.2.0, Spirits.3.0, Spirits.4.0), na.rm = TRUE)) %>%
-  ungroup()
+# Calculate row mean for each set of variables and create new columns
+data$Beer_mean <- rowMeans(data[,c('Beer.0.0', 'Beer.1.0', 'Beer.2.0', 'Beer.3.0', 'Beer.4.0')], na.rm = TRUE)
+
+data$Red_mean <- rowMeans(data[,c('Red_0', 'Red_1', 'Red_2', 'Red_3', 'Red_4')], na.rm = TRUE)
+
+data$White_mean <- rowMeans(data[,c('White_0', 'White_1', 'White_2', 'White_3', 'White_4')], na.rm = TRUE)
+
+data$Rose_mean <- rowMeans(data[,c('Rose_0', 'Rose_1', 'Rose_2', 'Rose_3', 'Rose_4')], na.rm = TRUE)
+
+data$Spirits_mean <- rowMeans(data[,c('Spirits.0.0', 'Spirits.1.0', 'Spirits.2.0', 'Spirits.3.0', 'Spirits.4.0')], na.rm = TRUE)
+
 
 write.csv(data, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\dairy_alcohol_0612.csv",na='',row.names=FALSE)
 rm(list=ls())
