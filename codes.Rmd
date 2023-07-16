@@ -984,3 +984,9 @@ write.csv(data, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\alcohol_0614.c
 rm(list=ls())
 ```
 
+```{Unix}
+### get data10 -- get all food data
+$ cols="1,"$(seq -s, 3338 3622)","$(seq -s, 3633 3642)","$(seq -s, 3758 4157)","$(seq -s, 4218 4697)
+cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data10_food.csv
+
+```
