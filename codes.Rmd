@@ -1039,19 +1039,65 @@ chmod +x extract_columns.sh
 
 This will execute all of the commands in the script, one after the other.
 
-
 ```{r}
-#work on continuous data
-#merge continuous variables with the others
-dataa <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/data10_continuous.csv')
+#get all data available
+dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/random_effects.csv')
 datab <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_noIDV.csv')
 datac<-merge(dataa,datab,by="EID")
 rm(dataa)
 rm(datab)
-dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/random_effects.csv')
+dataa<-read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/data10_continuous.csv')
 datab<-merge(dataa,datac,by="EID")
-rm(dataa)
-rm(datac)
 write.csv(datab, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\food_contious.csv",na='',row.names=FALSE)
+rm(datab)
+rm(dataa)
+dataa <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/data11_liquids.csv')
+datab <- merge(dataa,datac,by="EID")
+write.csv(datab, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\food_liquids.csv",na='',row.names=FALSE)
+rm(datab)
+rm(dataa)
+dataa<- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/data12_grain_dessert.csv')
+datab <- merge(dataa,datac,by="EID")
+write.csv(datab, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\food_grain_dessert.csv",na='',row.names=FALSE)
+rm(datab)
+rm(dataa)
+dataa<- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/data13_meat_vege.csv')
+datab <- merge(dataa,datac,by="EID")
+write.csv(datab, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\food_meat_vege.csv",na='',row.names=FALSE)
 rm(list=ls())
+```
+
+
+```{r}
+#get all data available (more efficient and maintainable than the above one)
+# Define function for the repeated steps
+merge_and_write <- function(input_filename, output_filename, datac) {
+  data <- read.csv(file = paste0('C:/Users/timothy/Documents/GWAS_data/dairy/', input_filename))
+  merged_data <- merge(data, datac, by = "EID")
+  write.csv(merged_data, paste0('C:/Users/timothy/Documents/GWAS_data/dairy/', output_filename), na = '', row.names = FALSE)
+}
+
+# Get base data
+dataa <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/random_effects.csv')
+datab <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_noIDV.csv')
+datac <- merge(dataa, datab, by = "EID")
+
+# Clean up
+rm(dataa, datab)
+
+# List of input and output filenames
+files <- list(
+  list(input = "data10_continuous.csv", output = "food_contious.csv"),
+  list(input = "data11_liquids.csv", output = "food_liquids.csv"),
+  list(input = "data12_grain_dessert.csv", output = "food_grain_dessert.csv"),
+  list(input = "data13_meat_vege.csv", output = "food_meat_vege.csv")
+)
+
+# Use a for loop to process all files
+for (file in files) {
+  merge_and_write(file$input, file$output, datac)
+}
+
+# Clean up
+rm(list = ls())
 ```
