@@ -999,6 +999,45 @@ $ cols="1,"$(seq -s, 4218 4697)
 cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data13_meat_vege.csv
 ```
 
+# The provided code is a set of Unix commands intended to extract certain columns from a .csv file and write these columns to new .csv files. To run all of these commands at once, you can put them into a shell script, and then execute the script. Here's how:
+
+1. Open a text editor, and paste the following code into it:
+
+```{bash}
+#!/bin/bash
+
+# get data10 -- continuous data -- UDI from 98677 to 99461
+cols="1,"$(seq -s, 3338 3447)
+cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data10_continuous.csv
+
+# get data11 -- get liquid data -- UDI from 100150 to 100500; from 100540 to 100550
+cols="1,"$(seq -s, 3448 3617)","$(seq -s, 3633 3642)
+cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data11_liquids.csv
+
+# get data12 -- get bread/dessert/grain data
+cols="1,"$(seq -s, 3758 4157)
+cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data12_grain_dessert.csv
+
+# get data13 -- get egg/meat/fish/vegetarian data
+cols="1,"$(seq -s, 4218 4697)
+cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data13_meat_vege.csv
+```
+
+2. Save this file as `extract_columns.sh` or another name of your choosing with the `.sh` extension.
+
+3. Open a terminal window, navigate to the directory where you saved `extract_columns.sh`, and then run the following command to make the script executable:
+
+```{bash}
+chmod +x extract_columns.sh
+```
+
+4. Now, you can run the script with this command:
+
+```{bash}
+./extract_columns.sh
+```
+
+This will execute all of the commands in the script, one after the other.
 
 
 ```{r}
