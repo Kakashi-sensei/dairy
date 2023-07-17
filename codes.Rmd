@@ -985,8 +985,34 @@ rm(list=ls())
 ```
 
 ```{Unix}
-### get data10 -- get all food data
-$ cols="1,"$(seq -s, 3338 3622)","$(seq -s, 3633 3642)","$(seq -s, 3758 4157)","$(seq -s, 4218 4697)
-cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data10_food.csv
+### get data10 -- get all Continuous data -- UDI from 100002 to 100025
+$ cols="1,"$(seq -s, 3338 3447)
+cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data10_continuous.csv
+### get data11 -- get liquid data -- UDI from 100150 to 100500; from 100540 to 100550
+$ cols="1,"$(seq -s, 3448 3617)","$(seq -s, 3633 3642)
+cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data11_liquids.csv
+### get data12 -- get bread/dessert/grain data
+$ cols="1,"$(seq -s, 3758 4157)
+cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data12_grain_dessert.csv
+### get data13 -- get egg/meat/fish/vegetarian data
+$ cols="1,"$(seq -s, 4218 4697)
+cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data13_meat_vege.csv
+```
 
+
+
+```{r}
+#work on continuous data
+#merge continuous variables with the others
+dataa <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/data10_continuous.csv')
+datab <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_noIDV.csv')
+datac<-merge(dataa,datab,by="EID")
+rm(dataa)
+rm(datab)
+dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/random_effects.csv')
+datab<-merge(dataa,datac,by="EID")
+rm(dataa)
+rm(datac)
+write.csv(datab, "C:\\Users\\timothy\\Documents\\GWAS_data\\dairy\\food_contious.csv",na='',row.names=FALSE)
+rm(list=ls())
 ```
