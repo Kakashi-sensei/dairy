@@ -1007,19 +1007,19 @@ cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data13_meat_vege.csv
 #!/bin/bash
 
 # get data10 -- continuous data -- UDI from 98677 to 99461
-cols="1,"$(seq -s, 3338 3447)
+cols="1,"$(seq -s, 3339 3448)
 cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data10_continuous.csv
 
 # get data11 -- get liquid data -- UDI from 100150 to 100500; from 100540 to 100550
-cols="1,"$(seq -s, 3448 3617)","$(seq -s, 3633 3642)
+cols="1,"$(seq -s, 3449 3618)","$(seq -s, 3634 3643)
 cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data11_liquids.csv
 
 # get data12 -- get bread/dessert/grain data
-cols="1,"$(seq -s, 3758 4157)
+cols="1,"$(seq -s, 3759 4158)
 cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data12_grain_dessert.csv
 
 # get data13 -- get egg/meat/fish/vegetarian data
-cols="1,"$(seq -s, 4218 4697)
+cols="1,"$(seq -s, 4219 4698)
 cut -d ',' -f ${cols} ukb42166_2020JUN01.csv > data13_meat_vege.csv
 ```
 
