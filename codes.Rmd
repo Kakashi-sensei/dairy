@@ -1040,6 +1040,375 @@ chmod +x extract_columns.sh
 This will execute all of the commands in the script, one after the other.
 
 ```{r}
+#replace names for data11 and get data of liquids done
+## 1. replace names for data11
+library(dplyr)
+
+df<-read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/data11_liquids.csv',check.names = FALSE)
+df <- rename(df, "EID" = "eid")
+
+old_names <- grep("^100150", colnames(df), value = TRUE)
+new_names <- sub("^100150", "Water", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100160", colnames(df), value = TRUE)
+new_names <- sub("^100160", "LowCalorie", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100170", colnames(df), value = TRUE)
+new_names <- sub("^100170", "Fizzy", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100180", colnames(df), value = TRUE)
+new_names <- sub("^100180", "Squash", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100190", colnames(df), value = TRUE)
+new_names <- sub("^100190", "OrangeJuice", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100200", colnames(df), value = TRUE)
+new_names <- sub("^100200", "GrapeJuice", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100210", colnames(df), value = TRUE)
+new_names <- sub("^100210", "FruitVegeJuice", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100220", colnames(df), value = TRUE)
+new_names <- sub("^100220", "FruitSmoothie", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100230", colnames(df), value = TRUE)
+new_names <- sub("^100230", "DairySmoothie", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100240", colnames(df), value = TRUE)
+new_names <- sub("^100240", "CoffeeConsume", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100250", colnames(df), value = TRUE)
+new_names <- sub("^100250", "InstantCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100260", colnames(df), value = TRUE)
+new_names <- sub("^100260", "AddMilkCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100270", colnames(df), value = TRUE)
+new_names <- sub("^100270", "FilterCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100280", colnames(df), value = TRUE)
+new_names <- sub("^100280", "AddMilkFilterCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100290", colnames(df), value = TRUE)
+new_names <- sub("^100290", "Cappuccino", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100300", colnames(df), value = TRUE)
+new_names <- sub("^100300", "Latte", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100310", colnames(df), value = TRUE)
+new_names <- sub("^100310", "Espresso", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100320", colnames(df), value = TRUE)
+new_names <- sub("^100320", "AddMilkEspresso", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100330", colnames(df), value = TRUE)
+new_names <- sub("^100330", "OtherCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100350", colnames(df), value = TRUE)
+new_names <- sub("^100350", "AddMilkOtherCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100360", colnames(df), value = TRUE)
+new_names <- sub("^100360", "DecaffeinCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100370", colnames(df), value = TRUE)
+new_names <- sub("^100370", "SugarAddtoCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100380", colnames(df), value = TRUE)
+new_names <- sub("^100380", "ArtificialSweettoCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100390", colnames(df), value = TRUE)
+new_names <- sub("^100390", "TeaConsume", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100400", colnames(df), value = TRUE)
+new_names <- sub("^100400", "StandTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100410", colnames(df), value = TRUE)
+new_names <- sub("^100410", "RooibosTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100420", colnames(df), value = TRUE)
+new_names <- sub("^100420", "GreenTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100430", colnames(df), value = TRUE)
+new_names <- sub("^100430", "HerbalTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100440", colnames(df), value = TRUE)
+new_names <- sub("^100440", "OtherTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100460", colnames(df), value = TRUE)
+new_names <- sub("^100460", "AddMilkStandTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100470", colnames(df), value = TRUE)
+new_names <- sub("^100470", "DecaffeinTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100480", colnames(df), value = TRUE)
+new_names <- sub("^100480", "AddMilkRooibos", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100490", colnames(df), value = TRUE)
+new_names <- sub("^100490", "SugarToTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100500", colnames(df), value = TRUE)
+new_names <- sub("^100500", "ArtificialSweetTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100540", colnames(df), value = TRUE)
+new_names <- sub("^100540", "LowCalorieHotChocolate", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100540", colnames(df), value = TRUE)
+new_names <- sub("^100540", "LowCalorieHotChocolate", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100550", colnames(df), value = TRUE)
+new_names <- sub("^100550", "HotChocolate", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+## 2. get liquids data done
+#get other variables
+dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/random_effects.csv')
+datab <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_noIDV.csv')
+datac<-merge(dataa,datab,by="EID")
+#clean up
+rm(dataa,datab)
+datab<-merge(df,datac,by="EID")
+rm(df)
+write.csv(datab, "C:\\Users\\timothy\\OneDrive\\Documents\\ISU\\food_project\\data\\food_liquids.csv",na='',row.names=FALSE)
+rm(datab,new_names,old_names)
+
+
+# get data12 -- grain_dessert data done
+# Read the data12
+df <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/data12_grain_dessert.csv', check.names = FALSE)
+df <- rename(df, "EID" = "eid")
+
+# Define a named vector where names are the old column name parts, and the values are the new ones
+name_changes <- c("100940" = "Bread", "100950" = "SlicedBread", "101020" = "Baguette", "101090" = "Bap",
+                  "101160" = "Breadroll", "101230" = "Naanbread", "101240" = "Garlicbread", 
+                  "101250" = "Crispbread", "101260" = "Oatcakes", "101270" = "Otherbread", 
+                  "101300" = "Butteronbread", "101310" = "NumberofsliceswithButt", "101350" = "NumberbaguettewithButt", 
+                  "101390" = "NumberbapwithButt", "101430" = "NumberbreadrollwithButt", "101470" = "NumbercrackerwithButt",
+                  "101510" = "NumberoatcakewithButt", "101550" = "NumberOthbreadwithButt", "101970" = "DoubleCrustPastry",
+                  "101980" = "SingleCrustPastry", "101990" = "Crumble", "102000" = "Pizza",
+                  "102010" = "Pancake", "102020" = "ScotchPancake", "102030" = "YorkshirePudd",
+                  "102040" = "IndiaSnack", "102050" = "Croissant", "102060" = "DanishPastry", 
+                  "102070" = "Scone", "102080" = "Yogurt_IcecreamConsum", "102090" = "Yogurt",
+                  "102120" = "Icecream", "102130" = "DessertConsum", "102140" = "MilkPuddin",
+                  "102170" = "Soya", "102180" = "Fruitcake", "102190" = "Cake", "102200" = "Doughnut", "102210" = "Spongepuddin", "102220" = "Cheesecake", "102230" = "Othdessert", "102250" = "SweetsnackConsum", "102260" = "Chocolatebar", "102270" = "WhiteChocolate", "102280" = "MilkChocolate", "102290" = "DarkChocolate", "102300" = "ChocolateRaisin", "102310" = "Chocolatesweet", "102320" = "Dietsweet", "102330" = "Sweets", "102340" = "ChocolateCoverBiscuit", "102350" = "ChocolateBiscuit", "102360" = "SweetBiscuit", "102370" = "CerealBar", "102380" = "OthSweet", "102400" = "Savoury", "102410" = "SaltPeanut", "102420" = "Peanut", "102430" = "SaltNut", "102440" = "Nut", "102450" = "Seeds", "102460" = "Crisp", "102470" = "SavouryBiscuit", "102480" = "CheesyBiscuit", "102490" = "Olives", "102500" = "OthSavoury", "102520" = "SoupConsum", "102530" = "InstantSoup", "102540" = "CannnedSoup", "102620" = "HomeSoup", "102700" = "StarchyConsum", "102710" = "WhitePasta", "102720" = "WholemealPasta", "102730" = "WhiteRice", "102740" = "BrownRice", "102750" = "Sushi", "102760" = "Snackpot", "102770" = "Couscous", "102780" = "OthGrain")
+
+# Iterate over name_changes
+for (old_name in names(name_changes)) {
+  new_name = name_changes[old_name]
+  old_names <- grep(paste0("^", old_name), colnames(df), value = TRUE)
+  new_names <- sub(paste0("^", old_name), new_name, old_names)
+  colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+}
+#clean up
+rm(name_changes,new_name,new_names,old_name,old_names)
+datab<-merge(df,datac,by="EID")
+rm(df)
+write.csv(datab, "C:\\Users\\timothy\\OneDrive\\Documents\\ISU\\food_project\\data\\food_grain_dessert.csv",na='',row.names=FALSE)
+rm(datab)
+
+
+rm(list=ls())
+```
+
+
+
+
+
+
+```{r}
+#replace names for data12
+library(dplyr)
+
+df<-read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/data12_grain_dessert.csv',check.names = FALSE)
+df <- rename(df, "EID" = "eid")
+
+old_names <- grep("^100150", colnames(df), value = TRUE)
+new_names <- sub("^100150", "Water", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100160", colnames(df), value = TRUE)
+new_names <- sub("^100160", "LowCalorie", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100170", colnames(df), value = TRUE)
+new_names <- sub("^100170", "Fizzy", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100180", colnames(df), value = TRUE)
+new_names <- sub("^100180", "Squash", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100190", colnames(df), value = TRUE)
+new_names <- sub("^100190", "OrangeJuice", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100200", colnames(df), value = TRUE)
+new_names <- sub("^100200", "GrapeJuice", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100210", colnames(df), value = TRUE)
+new_names <- sub("^100210", "FruitVegeJuice", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100220", colnames(df), value = TRUE)
+new_names <- sub("^100220", "FruitSmoothie", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100230", colnames(df), value = TRUE)
+new_names <- sub("^100230", "DairySmoothie", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100240", colnames(df), value = TRUE)
+new_names <- sub("^100240", "CoffeeConsume", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100250", colnames(df), value = TRUE)
+new_names <- sub("^100250", "InstantCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100260", colnames(df), value = TRUE)
+new_names <- sub("^100260", "AddMilkCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100270", colnames(df), value = TRUE)
+new_names <- sub("^100270", "FilterCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100280", colnames(df), value = TRUE)
+new_names <- sub("^100280", "AddMilkFilterCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100290", colnames(df), value = TRUE)
+new_names <- sub("^100290", "Cappuccino", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100300", colnames(df), value = TRUE)
+new_names <- sub("^100300", "Latte", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100310", colnames(df), value = TRUE)
+new_names <- sub("^100310", "Espresso", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100320", colnames(df), value = TRUE)
+new_names <- sub("^100320", "AddMilkEspresso", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100330", colnames(df), value = TRUE)
+new_names <- sub("^100330", "OtherCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100350", colnames(df), value = TRUE)
+new_names <- sub("^100350", "AddMilkOtherCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100360", colnames(df), value = TRUE)
+new_names <- sub("^100360", "DecaffeinCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100370", colnames(df), value = TRUE)
+new_names <- sub("^100370", "SugarAddtoCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100380", colnames(df), value = TRUE)
+new_names <- sub("^100380", "ArtificialSweettoCoffee", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100390", colnames(df), value = TRUE)
+new_names <- sub("^100390", "TeaConsume", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100400", colnames(df), value = TRUE)
+new_names <- sub("^100400", "StandTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100410", colnames(df), value = TRUE)
+new_names <- sub("^100410", "RooibosTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100420", colnames(df), value = TRUE)
+new_names <- sub("^100420", "GreenTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100430", colnames(df), value = TRUE)
+new_names <- sub("^100430", "HerbalTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100440", colnames(df), value = TRUE)
+new_names <- sub("^100440", "OtherTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100460", colnames(df), value = TRUE)
+new_names <- sub("^100460", "AddMilkStandTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100470", colnames(df), value = TRUE)
+new_names <- sub("^100470", "DecaffeinTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100480", colnames(df), value = TRUE)
+new_names <- sub("^100480", "AddMilkRooibos", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100490", colnames(df), value = TRUE)
+new_names <- sub("^100490", "SugarToTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100500", colnames(df), value = TRUE)
+new_names <- sub("^100500", "ArtificialSweetTea", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100540", colnames(df), value = TRUE)
+new_names <- sub("^100540", "LowCalorieHotChocolate", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100540", colnames(df), value = TRUE)
+new_names <- sub("^100540", "LowCalorieHotChocolate", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+old_names <- grep("^100550", colnames(df), value = TRUE)
+new_names <- sub("^100550", "HotChocolate", old_names)
+colnames(df) <- ifelse(colnames(df) %in% old_names, new_names, colnames(df))
+
+rm(list=ls())
+```
+
+```{r}
 #get all data available
 dataa<-read.csv(file='C:/Users/timothy/Documents/GWAS_data/dairy/random_effects.csv')
 datab <- read.csv(file = 'C:/Users/timothy/Documents/GWAS_data/dairy/dairydata_noIDV.csv')
