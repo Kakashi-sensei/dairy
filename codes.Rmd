@@ -1322,10 +1322,6 @@ for (old_name in names(name_changes)) {
 rm(name_changes,new_name,new_names,old_name,old_names)
 datab<-merge(df,datac,by="EID")
 rm(df)
-# Check each value in each column and if it is not numeric, replace it with NA
-datab[] <- lapply(datab, function(x) ifelse(is.numeric(x), x, NA))
-# Then you can remove rows with NA values
-datab <- na.omit(datab)
 write.csv(datab, "C:\\Users\\timothy\\OneDrive\\Documents\\ISU\\food_project\\data\\food_contious.csv",na='',row.names=FALSE)
 rm(list=ls())
 ```
