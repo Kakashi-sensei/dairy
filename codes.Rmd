@@ -1267,7 +1267,7 @@ name_changes <- c("102930" = "EggConsum", "102940" = "WholeEgg", "102950" = "Ome
                   "103170" = "BreadFish", "103180" = "BatteredFish", "103190" = "WhiteFish", 
                   "103200" = "Prawns", "103210" = "LobsterCrab", "103220" = "Shellfish", 
                   "103230" = "OthFish", "103250" = "VegeAlter", "103260" = "VegeSausage", 
-                  "103270" = "Tofu", "103280" = "Quorn", "103290" = "OthVege", "103310" = "SpreadConsum", 
+                  "103270" = "Tofu", "103280" = "Quorn", "103290" = "OthVegeAlter", "103310" = "SpreadConsum", 
                   "103980" = "NoFatCook", "103990" = "VegeConsum", "104000" = "BakeBean", "104010" = "Pulse", 
                   "104020" = "FriedPotato", "104030" = "BoilPotato", "104040" = "ButterAddPotato", 
                   "104050" = "MashPotato", "104060" = "MixVege", "104070" = "VegePiece", 
